@@ -14,16 +14,19 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import com.fjt.entitys.User;
-import com.fjt.repository.custom.PageCustom;
+
 import com.fjt.repository.custom.UserReporsCustom;
 import com.fjt.service.UserService;
 
 /**
- * 这边是自定义接口的实现类，这边主要实现类的名称（前缀是：UsersRepository）
+ * 这边是自定义接口的实现类，
+ * 
+ * （自定义Repository接口实现类名字：接口名+Impl ，注意这边实现类不能写成UserReporsCustomImpl 否则会报错）
+ * (实现类写的其实就是jpa的技术)
  * @author posdev
  *
  */
-public class UsersRepositoryImpl implements UserReporsCustom,PageCustom{
+public class UsersRepositoryImpl implements UserReporsCustom{
 
 	@PersistenceContext
 	private EntityManager entitymanager;
@@ -31,12 +34,10 @@ public class UsersRepositoryImpl implements UserReporsCustom,PageCustom{
 	@Autowired
 	private UserService userservice;
 	
-	@Override
-	public void contAll() {
-		// TODO Auto-generated method stub
-		System.out.println("这边是操作数据库的代码");
-	}
-
+	
+	/**
+	 * jpa分页查询方法
+	 */
 	@Override
 	public Page<User> HiberPage(Pageable pageable, String userName,
 			String telp) {
@@ -70,6 +71,12 @@ public class UsersRepositoryImpl implements UserReporsCustom,PageCustom{
 		int total=users.size();
 	    Page<User> pge=new PageImpl<User>(content,pageable,total); 
 		return pge;
+	}
+
+	@Override
+	public User findUserById(Integer userid) {
+		// TODO Auto-generated method stub
+		return this.entitymanager.find(User.class, userid);
 	}
 
 }

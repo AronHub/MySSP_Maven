@@ -64,4 +64,12 @@ public class User implements  Serializable{
 	public void setAddr(String addr) {
 		this.addr = addr;
 	}
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", name=" + name + ", pssword=" + pssword + ", telep=" + telep + ", addr=" + addr
+				+ "]";
+	}
+	
+	
+	
 }

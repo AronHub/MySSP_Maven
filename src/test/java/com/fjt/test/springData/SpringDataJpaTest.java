@@ -1,4 +1,4 @@
-package com.fjt.test;
+package com.fjt.test.springData;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,6 +20,7 @@ import com.fjt.repository.UsersRepository;
 
 /**
  * spring 的测试类
+ * 对增删改查的简单测试操作
  * @author Administrator
  *
  */
@@ -38,10 +39,12 @@ public class SpringDataJpaTest {
 		atArticle.setAuthor("涛涛");
 		atArticle.setCreateTime(new Date());
 		atArticle.setTitle("这是一个很吊的人");
-		//保存
+		
+		//这边不需要加上@Transactional注解是因为save（）内部源码就写了@Transactional 注解
 		articleRepository.save(atArticle);
 		
 	  }
+	  
 	  //删除操作方式一
 	  @Test
 	  public void testDelet1() {
@@ -50,8 +53,13 @@ public class SpringDataJpaTest {
 	  //删除操作方式二
 	  @Test
 	  public void testDelet2() {
-		  Article article=articleRepository.findOne(250);
-		  articleRepository.delete(article);	  
+		 /*
+		  * Article article=articleRepository.findOne(250);
+		  * articleRepository.delete(article);
+		 */	  
+		  Article article=new Article();
+		  article.setAid(250);
+		  articleRepository.delete(article);
 	  }
 	  
 	  //修改方式一(推荐使用)

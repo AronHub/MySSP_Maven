@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 /**
- * 用于测试的实体类
+ * 用于测试spring data jpa的实体类
  * @author Administrator
  *
  */
@@ -13,7 +13,11 @@ import java.util.Date;
 @SequenceGenerator(name="seq", sequenceName="art_id_seq")
 public class Article {
 
-    @Id
+	/**
+	 * oracle 使用序列方式： @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "seq")  
+	 * mysql 数据库自增长方式:@GeneratedValue(strategy = GenerationType.IDENTITY)
+	 */
+    @Id 
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "seq")
     private Integer aid;
 
