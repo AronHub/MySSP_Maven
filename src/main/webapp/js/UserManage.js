@@ -2,7 +2,7 @@ var base={
 		domain:window.location.protocol + "//" + window.location.host
 		+"/MySSP_Maven/"
 }
-var pageRows=3;
+var pageRows=2;
 var pageNow=1;
 //页码控制的变量
 var mind=3;

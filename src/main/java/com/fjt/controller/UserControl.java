@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.pattern.LogEvent;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -136,7 +137,6 @@ public class UserControl {
 	public Map<String,Object> findUserInfo(HttpServletRequest request,@RequestParam Map<String,String> recevis) throws UnsupportedEncodingException
 	{
 		//解决中文乱码问题。
-		//String username=new String( request.getParameter("usernames").getBytes("ISO-8859-1"),"utf-8");
 		//get提交中文乱码的解决方法
 		//String username=new String(recevis.get("usernames").getBytes("ISO-8859-1"),"utf-8");
 		
@@ -145,16 +145,25 @@ public class UserControl {
 		String telep=recevis.get("telep");
 		
 	    //获取一页有几行。
-	    int pageRows=Integer.parseInt(request.getParameter("Rows"));
+		String pageRower=request.getParameter("Rows");
+		int pageRows=2;
+		if(StringUtils.isNotBlank(pageRower)) {
+			  pageRows=Integer.parseInt(pageRower);
+		}
 	    //获取当前页。
-	    int pageNow=Integer.parseInt(request.getParameter("pageNow"))-1 ;
-	    //排序方式
+		String pageNows=request.getParameter("pageNow");
+		int pageNow=1;
+		if(StringUtils.isNotBlank(pageNows)) {
+			 pageNow=Integer.parseInt(pageNows)-1;
+		}
+	   
+	    //根据id升序排序
 	    Sort sort=new Sort(Sort.Direction.ASC,"id");
+	  
 	    Pageable pageable=new PageRequest(pageNow,pageRows,sort);
 	    
 	    Map<String,Object> map=userservice.findPage2(pageable,username,telep);
-	    //Map<String,Object> map=userservice.findPage(pageable);
-        
+ 
 	    HashMap<String, Object> resultMap=new HashMap<String, Object>();
 	    resultMap.put("content", map.get("content"));
 	    resultMap.put("total", map.get("total"));

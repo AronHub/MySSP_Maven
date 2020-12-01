@@ -14,6 +14,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Proxy;
+
 /**
  * jpa的测试实体类
  * @author Administrator
@@ -23,6 +25,17 @@ import javax.persistence.Transient;
 @Table(name = "student")
 public class Student {
 	
+	public Student() {
+		
+	}
+	
+	
+	public Student(String name, Integer age) {
+		super();
+		this.name = name;
+		this.age = age;
+	}
+
 	@Id
 	@SequenceGenerator(name = "seq_st",sequenceName = "student_ID_SEQ")
 	@GeneratedValue(generator = "seq_st",strategy = GenerationType.SEQUENCE)

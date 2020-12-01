@@ -43,11 +43,7 @@ public class UserSeviceImpl implements UserService{
 		userRepos.save(user);
 	}
 
-	@Override
-	public void count() {
-		// TODO Auto-generated method stub
-		userRepos.count();
-	}
+	
 
 	@Override
 	public List<User> findAllUser() {
@@ -55,24 +51,7 @@ public class UserSeviceImpl implements UserService{
 		return userRepos.findAllUser();
 	}
 
-	@Override
-	public Map<String, Object> findPage(Pageable pageable) {
-		// TODO Auto-generated method stub
-		HashMap<String, Object> map=new HashMap<String, Object>();
-        //使用 了JpaRepository接口提供的分页实现的方法findAll(Pageable pageable)
-		Page<User> page=userRepos.findAll(pageable);
-		
-		List<User> content=page.getContent();
-		//查询的是总的记录数
-		//Long total=page.getTotalElements();
-//		//每页有几条记录。
-//		int number=page.getSize();
-		//共有几页
-		int pagecount=page.getTotalPages();
-		map.put("content", content);
-		map.put("total", pagecount);
-		return map;
-	}
+	
 
 	@Override
 	public Map<String, Object> findPage2(Pageable pageable, String userName,

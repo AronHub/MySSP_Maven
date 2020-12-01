@@ -28,7 +28,7 @@ public class User implements  Serializable{
     @Id
     @GeneratedValue
     @Column(name="usr_id")
-	private int id;
+	private Integer id;
 	private String name;
 	private String pssword;
 	private String telep;
@@ -40,10 +40,11 @@ public class User implements  Serializable{
 	public void setPssword(String pssword) {
 		this.pssword = pssword;
 	}
-	public int getId() {
+	
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getName() {

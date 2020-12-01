@@ -8,10 +8,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+
 
 import com.fjt.entitys.User;
 
@@ -43,34 +45,41 @@ public class UsersRepositoryImpl implements UserReporsCustom{
 			String telp) {
 		Map<String,Object> param=new HashMap<String, Object>();
 		String jpql="select us  from User us where 1=1 ";
-		if(userName!=null&&userName!=""){
+		String jpql_count="select count(id) from User where 1=1 ";
+		
+		if(StringUtils.isNotBlank(userName)){
 			jpql+="and us.name like :userName";
-			param.put("userName","%"+userName+"%");
+			jpql_count+="and us.name like :userName";
 		}
-		if(telp!=null&&telp!=""){
+		if(StringUtils.isNotBlank(telp)){
 			jpql+=" and us.telep like :telp";
-			param.put("telp","%"+telp+"%"); 
+			jpql_count+=" and us.telep like :telp";		 
 		}
 		
-		// TODO Auto-generated method stub
 	    Query query=entitymanager.createQuery(jpql);
+	    Query query_count=entitymanager.createQuery(jpql_count);
+	     
+	    if(StringUtils.isNotBlank(userName)){
+	    	query.setParameter("userName", "%"+userName+"%");
+	    	query_count.setParameter("userName", "%"+userName+"%");
+		}
+		if(StringUtils.isNotBlank(telp)){
+			query.setParameter("telp", "%"+telp+"%");
+	    	query_count.setParameter("telp", "%"+telp+"%");
+		}
+	    
+		System.out.println("pageable.getOffset()="+pageable.getOffset());
+		System.out.println("pageable.getPageSize()="+pageable.getPageSize());
 	    //setFirstResult表示从第几条开始。
 		query.setFirstResult(pageable.getOffset());
 		//setMaxResults表示取几条记录。
 		query.setMaxResults(pageable.getPageSize());
 		
-		for(Map.Entry<String,Object> entry:param.entrySet()){
-			String key=entry.getKey();
-			Object value=entry.getValue();
-			//System.out.println("key="+key+"value="+value);
-			query.setParameter(key, value);
-		}
-		@SuppressWarnings("unchecked")
+	
+	    Long total=(Long) query_count.getSingleResult();
 	    List<User> content=query.getResultList();
-		List<User> users=userservice.findAllUser();
-		int total=users.size();
-	    Page<User> pge=new PageImpl<User>(content,pageable,total); 
-		return pge;
+	    Page<User> page=new PageImpl<User>(content,pageable,total); 
+		return page;
 	}
 
 	@Override
