@@ -3,10 +3,14 @@ package com.fjt.repository;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Cacheable;
+import javax.persistence.QueryHint;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
 
 import com.fjt.entitys.Article;
@@ -82,5 +86,18 @@ public interface ArticleRepository extends JpaRepository<Article, Integer>,
 	/*@Query("update Article set author = ? where aid = ?")
 	@Modifying
 	void updateArticleauthorByAid(String author, Integer aid);*/
+	  
+	  //------------------------查询缓存   -----------------------------
+	  
+	  /**
+	   * 注意这边查询缓存除了要加上 @QueryHints注解，还得在Article类上加上@Cacheable(true)
+	   * @param title
+	   * @return
+	   */
+	  @Query("from Article a where a.title =?1")
+	  @QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value ="true") })	 
+	  List<Article>  findArticles(String title); 
+	  
+	  
 
 }

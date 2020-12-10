@@ -11,6 +11,7 @@ import java.util.Date;
 @Entity
 @Table(name = "article")
 @SequenceGenerator(name="seq", sequenceName="art_id_seq")
+@Cacheable(true)
 public class Article {
 
 	/**
